@@ -1,0 +1,65 @@
+plugins {
+    id 'java'
+    id 'net.minecrell.plugin-yml.bukkit' version '0.6.0'
+    id 'com.gradleup.shadow' version '8.3.3'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+    maven {
+        url = "https://storehouse.okaeri.eu/repository/maven-public/"
+    }
+    maven {
+        url = "https://repo.panda-lang.org/releases"
+    }
+    maven {
+        url = 'https://jitpack.io'
+    }
+}
+
+dependencies {
+    compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
+
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
+    compileOnly("org.projectlombok:lombok:1.18.30")
+
+    implementation("dev.rollczi:litecommands-bukkit:3.4.3")
+    implementation("dev.rollczi:litecommands-adventure:3.4.3")
+
+    implementation 'eu.okaeri:okaeri-configs-yaml-bukkit:5.0.5'
+    implementation("eu.okaeri:okaeri-configs-serdes-bukkit:5.0.3")
+
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
+}
+
+bukkit {
+    main = "pl.chudziudgi.venuspvp.OffHandPlugin"
+    apiVersion = "1.19"
+    prefix = "venuspvp-offhand-shop"
+    author = "Chudziudgi"
+    depend = List.of("Vault")
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release.set(targetJavaVersion)
+    }
+}

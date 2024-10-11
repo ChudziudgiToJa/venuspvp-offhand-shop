@@ -64,7 +64,7 @@ public class HandItemInventory {
         int itemIndex = 0;
 
         for (HandItem handItem : this.pluginConfiguration.feature.handItems) {
-            if (user.getHandItems().contains(handItem)) {
+            if (user.getHandItems().contains(handItem.getItemStack().getType().name())) {
                 continue;
             }
             ItemStack shopItem = new ItemBuilder(handItem.getItemStack())

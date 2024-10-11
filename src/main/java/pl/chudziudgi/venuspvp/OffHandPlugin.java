@@ -15,6 +15,7 @@ import pl.chudziudgi.venuspvp.config.DataBaseUserRepository;
 import pl.chudziudgi.venuspvp.config.PluginConfiguration;
 import pl.chudziudgi.venuspvp.feature.HandItemInventory;
 import pl.chudziudgi.venuspvp.feature.HandItemManager;
+import pl.chudziudgi.venuspvp.feature.HandTask;
 import pl.chudziudgi.venuspvp.feature.OffHandController;
 import pl.chudziudgi.venuspvp.user.UserController;
 import pl.chudziudgi.venuspvp.user.UserService;
@@ -76,6 +77,8 @@ public final class OffHandPlugin extends JavaPlugin {
 
         this.getServer().getPluginManager().registerEvents(new OffHandController(handItemManager, this.userService, this.pluginConfiguration), this);
         this.getServer().getPluginManager().registerEvents(new UserController(userService), this);
+
+        new HandTask(this.userService, handItemManager, this.pluginConfiguration).runTaskTimer(this,  100,100);
     }
 
     @Override

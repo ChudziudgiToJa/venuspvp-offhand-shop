@@ -40,11 +40,7 @@ public class HandItemInventory {
 
         Integer[] glassBlueSlots = {45, 46, 47, 48, 49, 50, 51, 52, 53};
 
-        Arrays.stream(glassBlueSlots).forEach(slot ->
-                inventory.setItem(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
-                        .setTitle("")
-                        .build())
-        );
+        Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setTitle("").build()));
 
         inventory.setItem(47, this.pluginConfiguration.feature.inventoryGuiItem, event -> {
             this.openInventory(player);
@@ -67,12 +63,7 @@ public class HandItemInventory {
             if (user.getHandItems().contains(handItem.getItemStack().getType().name())) {
                 continue;
             }
-            ItemStack shopItem = new ItemBuilder(handItem.getItemStack())
-                    .setTitle(this.pluginConfiguration.feature.itemInShopName.replace("%name%", handItem.getItemStack().getType().name()))
-                    .addLore(this.pluginConfiguration.feature.itemInShopLore.stream()
-                            .map(lore -> lore.replace("%price%", String.valueOf(handItem.getPrice())))
-                            .collect(Collectors.toList()))
-                    .build();
+            ItemStack shopItem = new ItemBuilder(handItem.getItemStack()).setTitle(this.pluginConfiguration.feature.itemInShopName.replace("%name%", handItem.getItemStack().getType().name())).addLore(this.pluginConfiguration.feature.itemInShopLore.stream().map(lore -> lore.replace("%price%", String.valueOf(handItem.getPrice()))).collect(Collectors.toList())).build();
 
             inventory.setItem(itemIndex++, shopItem, event -> {
                 EconomyResponse response = econ.withdrawPlayer(player, handItem.getPrice());
@@ -101,7 +92,7 @@ public class HandItemInventory {
             return;
         }
 
-        Integer[] glassBlueSlots = new Integer[]{45, 46, 47,48, 49,50, 51, 52, 53};
+        Integer[] glassBlueSlots = new Integer[]{45, 46, 47, 48, 49, 50, 51, 52, 53};
 
         Arrays.stream(glassBlueSlots).forEach(slot -> inv.setItem(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setTitle("").build()));
 
@@ -121,22 +112,15 @@ public class HandItemInventory {
         int i = 0;
         for (HandItem handItem : this.pluginConfiguration.feature.handItems) {
 
-            if (user.getHandItem() != null) {
-                if (user.getHandItem().equals(handItem.getItemStack().getType().name())) {
-                    continue;
-                }
-
-                if (!user.getHandItems().contains(handItem.getItemStack().getType().name())) {
-                    continue;
-                }
+            if (user.getHandItem().equals(handItem.getItemStack().getType().name())) {
+                continue;
             }
 
-            inv.setItem(i, new ItemBuilder(handItem.getItemStack())
-                    .setTitle(this.pluginConfiguration.feature.itemInInventoryName.replaceAll("%name%", handItem.getItemStack().getType().name()))
-                    .addLore(new ArrayList<>(this.pluginConfiguration.feature.itemInInventoryLore.stream()
-                            .map(string -> string.replaceAll("%price%", String.valueOf(handItem.getPrice())))
-                            .collect(Collectors.toList())))
-                    .build(), event -> {
+            if (!user.getHandItems().contains(handItem.getItemStack().getType().name())) {
+                continue;
+            }
+
+            inv.setItem(i, new ItemBuilder(handItem.getItemStack()).setTitle(this.pluginConfiguration.feature.itemInInventoryName.replaceAll("%name%", handItem.getItemStack().getType().name())).addLore(new ArrayList<>(this.pluginConfiguration.feature.itemInInventoryLore.stream().map(string -> string.replaceAll("%price%", String.valueOf(handItem.getPrice()))).collect(Collectors.toList()))).build(), event -> {
                 user.setHandItem(handItem.getItemStack().getType().name());
                 this.userService.saveUser(user);
                 player.closeInventory();

@@ -112,7 +112,7 @@ public class HandItemInventory {
         int i = 0;
         for (HandItem handItem : this.pluginConfiguration.feature.handItems) {
 
-            if (user.getHandItem().equals(handItem.getItemStack().getType().name())) {
+            if (handItem.getItemStack().getType().name().equals(user.getHandItem())) {
                 continue;
             }
 
